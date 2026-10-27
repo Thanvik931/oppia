@@ -417,11 +417,15 @@ class RteComponentExtractorUnitTests(test_utils.GenericTestBase):
         html_strings = [
             (
                 '<oppia-noninteractive-image '
-                'filepath-with-value="&quot;first_img.svg&quot;">'
+                'filepath-with-value="&quot;first_img.svg&quot;" '
+                'caption-with-value="&quot;&quot;" '
+                'alt-with-value="&quot;First Image&quot;">'
                 '</oppia-noninteractive-image>'
                 '<p>Some text</p>'
                 '<oppia-noninteractive-image '
-                'filepath-with-value="&quot;second_img.png&quot;">'
+                'filepath-with-value="&quot;second_img.png&quot;" '
+                'caption-with-value="&quot;&quot;" '
+                'alt-with-value="&quot;Second Image&quot;">'
                 '</oppia-noninteractive-image>'
             ),
             (
@@ -429,14 +433,19 @@ class RteComponentExtractorUnitTests(test_utils.GenericTestBase):
                 'math_content-with-value="{&amp;quot;raw_latex&amp;quot;:&amp;quot;+&amp;quot;,&amp;quot;svg_filename&amp;quot;:&amp;quot;math.svg&amp;quot;}">'
                 '</oppia-noninteractive-math>'
             ),
-            '<oppia-noninteractive-link url-with-value="&quot;https://oppia.org&quot;"></oppia-noninteractive-link>',
+            (
+                '<oppia-noninteractive-link '
+                'text-with-value="&quot;Click here&quot;" '
+                'url-with-value="&quot;https://www.oppia.org&quot;">'
+                '</oppia-noninteractive-link>'
+            ),
             '<p></p>',
         ]
         result = html_cleaner.get_image_filenames_from_html_strings(
             html_strings
         )
-        self.assertCountEqual(
-            result, ['first_img.svg', 'second_img.png', 'math.svg']
+        self.assertItemsEqual(
+            ['first_img.svg', 'second_img.png', 'math.svg'], result
         )
 
 
