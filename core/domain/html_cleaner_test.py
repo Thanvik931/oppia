@@ -408,6 +408,37 @@ class RteComponentExtractorUnitTests(test_utils.GenericTestBase):
         )
         self.assertEqual(result, [])
 
+    def test_get_image_filenames_with_multiple_mixed_rte_components(
+        self,
+    ) -> None:
+        """Test get_image_filenames_from_html_strings with multiple
+        consecutive image, math, and non-image components across multiple strings.
+        """
+        html_strings = [
+            (
+                '<oppia-noninteractive-image '
+                'filepath-with-value="&quot;first_img.svg&quot;">'
+                '</oppia-noninteractive-image>'
+                '<p>Some text</p>'
+                '<oppia-noninteractive-image '
+                'filepath-with-value="&quot;second_img.png&quot;">'
+                '</oppia-noninteractive-image>'
+            ),
+            (
+                '<oppia-noninteractive-math '
+                'math_content-with-value="{&amp;quot;raw_latex&amp;quot;:&amp;quot;+&amp;quot;,&amp;quot;svg_filename&amp;quot;:&amp;quot;math.svg&amp;quot;}">'
+                '</oppia-noninteractive-math>'
+            ),
+            '<oppia-noninteractive-link url-with-value="&quot;https://oppia.org&quot;"></oppia-noninteractive-link>',
+            '<p></p>',
+        ]
+        result = html_cleaner.get_image_filenames_from_html_strings(
+            html_strings
+        )
+        self.assertCountEqual(
+            result, ['first_img.svg', 'second_img.png', 'math.svg']
+        )
+
 
 class IsHtmlEmptyTests(test_utils.GenericTestBase):
     """Tests for the is_html_empty function."""
